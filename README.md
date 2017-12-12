@@ -23,7 +23,7 @@ Unfortunately, macOS has no built-in option to disable the Lid Close sensor. App
 3. Click "Preferences…".
 4. Add your favorite music app. By default, Fermata is configured to work with [Embrace](https://www.ricciadams.com/projects/embrace) (my DJ app).
 
-When Embrace starts to play audio, it prevents Idle Sleep via a call to `-[NSProcessInfo beginActivityWithOptions:reason:]`. Fermata will see this prevention and "upgrade" it to also apply to the Lid Close sensor. When Embrace stops playing audio, it once again allows Idle Sleep. Fermata sees this and once again allows Lid Close sleep.
+When Embrace starts to play audio, it prevents Idle Sleep via a call to `-[NSProcessInfo beginActivityWithOptions:reason:]`. Fermata sees this prevention and "upgrades" it to also prevent Lid Close Sleep. When Embrace stops playing audio, it once again allows Idle Sleep. Fermata sees this and re-enables Lid Close Sleep.
 
 Some applications may not properly prevent Idle Sleep. For these apps, use the "is running" option rather than "is preventing Idle Sleep".
 
