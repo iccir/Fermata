@@ -10,7 +10,7 @@ After wading through logs, I discovered that the Lid Close sensor was activated.
 
 Many DJs and musicians use headphones during live performances. It's common to place those headphones near the laptop when not in use.
 
-Unfortunately, macOS has no built-in option to disable the Lid Close sensor. Apps such as [InsomniaX](https://github.com/semaja2/InsomniaX) and [NoSleep](https://github.com/integralpro/nosleep) attempt to prevent this via an unsigned kernel extension; however, Apple's [System Integrity Protection](https://en.wikipedia.org/wiki/System_Integrity_Protection) prevents this on newer machines.
+Unfortunately, macOS has no built-in option to disable the Lid Close sensor. Apps such as [InsomniaX](https://github.com/semaja2/InsomniaX) and [NoSleep](https://github.com/integralpro/nosleep) attempt to prevent this via an unsigned kernel extension. However, these no longer work due to Apple's [System Integrity Protection](https://en.wikipedia.org/wiki/System_Integrity_Protection).
 
 ## Usage
 
