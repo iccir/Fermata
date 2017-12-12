@@ -68,7 +68,7 @@
                 RestlessApplication *app = [[RestlessApplication alloc] init];
                 [app setName:name];
                 [app setBundleIdentifier:bundleIdentifier];
-                [app setAction:RestlessActionPreventLidCloseSleepWhenRunning];
+                [app setAction:RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented];
                 
                 [_applicationsController addObject:app];
             }

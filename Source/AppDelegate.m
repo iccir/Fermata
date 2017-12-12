@@ -60,6 +60,18 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     __weak id weakSelf = self;
+    
+    NSDictionary *defaults = @{
+        LaunchAtLoginPreferenceKey: @NO,
+        ManualPreventionKey: @NO,
+        RestlessApplicationsPreferenceKey: @[ @{
+            @"name": @"Embrace",
+            @"bundle-identifier": @"com.iccir.Embrace",
+            @"action": @( RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented )
+        } ]
+    };
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 
     _engine     = [[RestlessEngine alloc] init];
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:30.0];

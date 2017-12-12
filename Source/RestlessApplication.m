@@ -60,8 +60,14 @@ static NSString *sActionKey           = @"action";
 
 - (NSImage *) image
 {
-    NSString *path = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:_bundleIdentifier];
-    return [[NSWorkspace sharedWorkspace] iconForFile:path];
+    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
+    NSString    *path      = [workspace absolutePathForAppBundleWithIdentifier:_bundleIdentifier];
+    
+    if (path) {
+        return [workspace iconForFile:path];
+    } else {
+        return [workspace iconForFileType: (__bridge id)kUTTypeApplicationBundle];
+    }
 }
 
 
