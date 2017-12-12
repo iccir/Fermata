@@ -448,8 +448,10 @@
 				CODE_SIGN_ENTITLEMENTS = Resources/Fermata.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KQ6YN23N9;
 				INFOPLIST_FILE = Resources/Fermata_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iccir.Fermata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -461,8 +463,10 @@
 				CODE_SIGN_ENTITLEMENTS = Resources/Fermata.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9KQ6YN23N9;
 				INFOPLIST_FILE = Resources/Fermata_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iccir.Fermata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
