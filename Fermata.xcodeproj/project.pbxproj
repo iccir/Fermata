@@ -16,6 +16,7 @@
 		550C63AB1FDE4D8A007841BC /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C63AA1FDE4D8A007841BC /* PreferencesController.m */; };
 		550C63AD1FDE5B89007841BC /* TableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550C63AC1FDE5B89007841BC /* TableCell.xib */; };
 		550C63B21FDE94C7007841BC /* Fermata.icns in Resources */ = {isa = PBXBuildFile; fileRef = 550C63B11FDE94C6007841BC /* Fermata.icns */; };
+		550C63B41FDF83B1007841BC /* Launcher_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C639C1FDE365D007841BC /* Launcher_main.m */; };
 		55416FF41FDE0E9500D7529A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55416FF31FDE0E9500D7529A /* Assets.xcassets */; };
 		55416FF71FDE0E9500D7529A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55416FF51FDE0E9500D7529A /* MainMenu.xib */; };
 		554170051FDE0EE000D7529A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 554170021FDE0EE000D7529A /* main.m */; };
@@ -271,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				550C63B41FDF83B1007841BC /* Launcher_main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
