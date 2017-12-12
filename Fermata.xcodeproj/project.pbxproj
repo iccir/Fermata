@@ -1,0 +1,484 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		550C637C1FDE334E007841BC /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550C637B1FDE334E007841BC /* Preferences.xib */; };
+		550C63941FDE353A007841BC /* Launch Fermata.app in Resources */ = {isa = PBXBuildFile; fileRef = 550C63811FDE349D007841BC /* Launch Fermata.app */; };
+		550C63961FDE3563007841BC /* Launch Fermata.app in Copy LoginItems */ = {isa = PBXBuildFile; fileRef = 550C63811FDE349D007841BC /* Launch Fermata.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		550C63A21FDE366A007841BC /* RestlessApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C639F1FDE366A007841BC /* RestlessApplication.m */; };
+		550C63A31FDE366A007841BC /* RestlessEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C63A01FDE366A007841BC /* RestlessEngine.m */; };
+		550C63A61FDE3695007841BC /* LaunchFermata_Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 550C63A41FDE3695007841BC /* LaunchFermata_Info.plist */; };
+		550C63AB1FDE4D8A007841BC /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C63AA1FDE4D8A007841BC /* PreferencesController.m */; };
+		550C63AD1FDE5B89007841BC /* TableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550C63AC1FDE5B89007841BC /* TableCell.xib */; };
+		550C63B21FDE94C7007841BC /* Fermata.icns in Resources */ = {isa = PBXBuildFile; fileRef = 550C63B11FDE94C6007841BC /* Fermata.icns */; };
+		55416FF41FDE0E9500D7529A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55416FF31FDE0E9500D7529A /* Assets.xcassets */; };
+		55416FF71FDE0E9500D7529A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55416FF51FDE0E9500D7529A /* MainMenu.xib */; };
+		554170051FDE0EE000D7529A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 554170021FDE0EE000D7529A /* main.m */; };
+		554170061FDE0EE000D7529A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 554170041FDE0EE000D7529A /* AppDelegate.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		550C63971FDE356D007841BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55416FE51FDE0E9500D7529A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 550C63801FDE349D007841BC;
+			remoteInfo = "Launch Fermata";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		550C63951FDE3558007841BC /* Copy LoginItems */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LoginItems;
+			dstSubfolderSpec = 1;
+			files = (
+				550C63961FDE3563007841BC /* Launch Fermata.app in Copy LoginItems */,
+			);
+			name = "Copy LoginItems";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		550C637B1FDE334E007841BC /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Preferences.xib; path = Resources/Preferences.xib; sourceTree = "<group>"; };
+		550C63811FDE349D007841BC /* Launch Fermata.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Launch Fermata.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		550C639C1FDE365D007841BC /* Launcher_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Launcher_main.m; path = Source/Launcher_main.m; sourceTree = "<group>"; };
+		550C639E1FDE366A007841BC /* RestlessApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RestlessApplication.h; path = Source/RestlessApplication.h; sourceTree = "<group>"; };
+		550C639F1FDE366A007841BC /* RestlessApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RestlessApplication.m; path = Source/RestlessApplication.m; sourceTree = "<group>"; };
+		550C63A01FDE366A007841BC /* RestlessEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RestlessEngine.m; path = Source/RestlessEngine.m; sourceTree = "<group>"; };
+		550C63A11FDE366A007841BC /* RestlessEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RestlessEngine.h; path = Source/RestlessEngine.h; sourceTree = "<group>"; };
+		550C63A41FDE3695007841BC /* LaunchFermata_Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = LaunchFermata_Info.plist; path = Resources/LaunchFermata_Info.plist; sourceTree = "<group>"; };
+		550C63A51FDE3695007841BC /* LaunchFermata.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = LaunchFermata.entitlements; path = Resources/LaunchFermata.entitlements; sourceTree = "<group>"; };
+		550C63A71FDE36C0007841BC /* Fermata_Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Fermata_Info.plist; path = Resources/Fermata_Info.plist; sourceTree = "<group>"; };
+		550C63A91FDE4D8A007841BC /* PreferencesController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PreferencesController.h; path = Source/PreferencesController.h; sourceTree = "<group>"; };
+		550C63AA1FDE4D8A007841BC /* PreferencesController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = PreferencesController.m; path = Source/PreferencesController.m; sourceTree = "<group>"; };
+		550C63AC1FDE5B89007841BC /* TableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TableCell.xib; path = Resources/TableCell.xib; sourceTree = "<group>"; };
+		550C63B11FDE94C6007841BC /* Fermata.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Fermata.icns; path = Resources/Fermata.icns; sourceTree = "<group>"; };
+		55416FED1FDE0E9500D7529A /* Fermata.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fermata.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		55416FF31FDE0E9500D7529A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		55416FF61FDE0E9500D7529A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		55416FFB1FDE0E9500D7529A /* Fermata.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Fermata.entitlements; path = Resources/Fermata.entitlements; sourceTree = "<group>"; };
+		554170021FDE0EE000D7529A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Source/main.m; sourceTree = SOURCE_ROOT; };
+		554170031FDE0EE000D7529A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = SOURCE_ROOT; };
+		554170041FDE0EE000D7529A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		550C637E1FDE349D007841BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55416FEA1FDE0E9500D7529A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		550C63991FDE35FE007841BC /* Launcher */ = {
+			isa = PBXGroup;
+			children = (
+				550C639C1FDE365D007841BC /* Launcher_main.m */,
+				550C63A41FDE3695007841BC /* LaunchFermata_Info.plist */,
+				550C63A51FDE3695007841BC /* LaunchFermata.entitlements */,
+			);
+			name = Launcher;
+			sourceTree = "<group>";
+		};
+		55416FE41FDE0E9500D7529A = {
+			isa = PBXGroup;
+			children = (
+				554170011FDE0ED000D7529A /* Source */,
+				55416FEF1FDE0E9500D7529A /* Resources */,
+				550C63991FDE35FE007841BC /* Launcher */,
+				55416FEE1FDE0E9500D7529A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		55416FEE1FDE0E9500D7529A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				55416FED1FDE0E9500D7529A /* Fermata.app */,
+				550C63811FDE349D007841BC /* Launch Fermata.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55416FEF1FDE0E9500D7529A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				550C63B11FDE94C6007841BC /* Fermata.icns */,
+				55416FF31FDE0E9500D7529A /* Assets.xcassets */,
+				550C63A71FDE36C0007841BC /* Fermata_Info.plist */,
+				55416FF51FDE0E9500D7529A /* MainMenu.xib */,
+				550C637B1FDE334E007841BC /* Preferences.xib */,
+				550C63AC1FDE5B89007841BC /* TableCell.xib */,
+				55416FFB1FDE0E9500D7529A /* Fermata.entitlements */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		554170011FDE0ED000D7529A /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				554170031FDE0EE000D7529A /* AppDelegate.h */,
+				554170041FDE0EE000D7529A /* AppDelegate.m */,
+				550C63A91FDE4D8A007841BC /* PreferencesController.h */,
+				550C63AA1FDE4D8A007841BC /* PreferencesController.m */,
+				550C639E1FDE366A007841BC /* RestlessApplication.h */,
+				550C639F1FDE366A007841BC /* RestlessApplication.m */,
+				550C63A11FDE366A007841BC /* RestlessEngine.h */,
+				550C63A01FDE366A007841BC /* RestlessEngine.m */,
+				554170021FDE0EE000D7529A /* main.m */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		550C63801FDE349D007841BC /* Launch Fermata */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 550C638F1FDE349D007841BC /* Build configuration list for PBXNativeTarget "Launch Fermata" */;
+			buildPhases = (
+				550C637D1FDE349D007841BC /* Sources */,
+				550C637E1FDE349D007841BC /* Frameworks */,
+				550C637F1FDE349D007841BC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Launch Fermata";
+			productName = "Launch Fermata";
+			productReference = 550C63811FDE349D007841BC /* Launch Fermata.app */;
+			productType = "com.apple.product-type.application";
+		};
+		55416FEC1FDE0E9500D7529A /* Fermata */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55416FFE1FDE0E9500D7529A /* Build configuration list for PBXNativeTarget "Fermata" */;
+			buildPhases = (
+				550C63951FDE3558007841BC /* Copy LoginItems */,
+				55416FEB1FDE0E9500D7529A /* Resources */,
+				55416FE91FDE0E9500D7529A /* Sources */,
+				55416FEA1FDE0E9500D7529A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				550C63981FDE356D007841BC /* PBXTargetDependency */,
+			);
+			name = Fermata;
+			productName = Fermata;
+			productReference = 55416FED1FDE0E9500D7529A /* Fermata.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55416FE51FDE0E9500D7529A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Ricci Adams";
+				TargetAttributes = {
+					550C63801FDE349D007841BC = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					55416FEC1FDE0E9500D7529A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 55416FE81FDE0E9500D7529A /* Build configuration list for PBXProject "Fermata" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 55416FE41FDE0E9500D7529A;
+			productRefGroup = 55416FEE1FDE0E9500D7529A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				55416FEC1FDE0E9500D7529A /* Fermata */,
+				550C63801FDE349D007841BC /* Launch Fermata */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		550C637F1FDE349D007841BC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55416FEB1FDE0E9500D7529A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				550C63941FDE353A007841BC /* Launch Fermata.app in Resources */,
+				550C63AD1FDE5B89007841BC /* TableCell.xib in Resources */,
+				550C63B21FDE94C7007841BC /* Fermata.icns in Resources */,
+				55416FF41FDE0E9500D7529A /* Assets.xcassets in Resources */,
+				550C637C1FDE334E007841BC /* Preferences.xib in Resources */,
+				55416FF71FDE0E9500D7529A /* MainMenu.xib in Resources */,
+				550C63A61FDE3695007841BC /* LaunchFermata_Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		550C637D1FDE349D007841BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55416FE91FDE0E9500D7529A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				550C63A21FDE366A007841BC /* RestlessApplication.m in Sources */,
+				554170061FDE0EE000D7529A /* AppDelegate.m in Sources */,
+				550C63AB1FDE4D8A007841BC /* PreferencesController.m in Sources */,
+				550C63A31FDE366A007841BC /* RestlessEngine.m in Sources */,
+				554170051FDE0EE000D7529A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		550C63981FDE356D007841BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 550C63801FDE349D007841BC /* Launch Fermata */;
+			targetProxy = 550C63971FDE356D007841BC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		55416FF51FDE0E9500D7529A /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				55416FF61FDE0E9500D7529A /* Base */,
+			);
+			name = MainMenu.xib;
+			path = Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		550C63901FDE349D007841BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/LaunchFermata.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Resources/LaunchFermata_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iccir.Fermata.Launcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		550C63911FDE349D007841BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Resources/LaunchFermata.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Resources/LaunchFermata_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iccir.Fermata.Launcher;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		55416FFC1FDE0E9500D7529A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		55416FFD1FDE0E9500D7529A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		55416FFF1FDE0E9500D7529A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Resources/Fermata.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Resources/Fermata_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iccir.Fermata;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		554170001FDE0E9500D7529A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Resources/Fermata.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Resources/Fermata_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iccir.Fermata;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		550C638F1FDE349D007841BC /* Build configuration list for PBXNativeTarget "Launch Fermata" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				550C63901FDE349D007841BC /* Debug */,
+				550C63911FDE349D007841BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55416FE81FDE0E9500D7529A /* Build configuration list for PBXProject "Fermata" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55416FFC1FDE0E9500D7529A /* Debug */,
+				55416FFD1FDE0E9500D7529A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55416FFE1FDE0E9500D7529A /* Build configuration list for PBXNativeTarget "Fermata" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55416FFF1FDE0E9500D7529A /* Debug */,
+				554170001FDE0E9500D7529A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55416FE51FDE0E9500D7529A /* Project object */;
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesController"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <userDefaultsController representsSharedInstance="YES" id="AMp-f0-DVD"/>
+        <tableCellView id="C9l-jk-0iH">
+            <rect key="frame" x="0.0" y="0.0" width="282" height="32"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vKD-JF-m7x">
+                    <rect key="frame" x="0.0" y="15" width="107" height="17"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="ped-1x-bFi">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="C9l-jk-0iH" name="value" keyPath="objectValue.name" id="niO-eY-GWt"/>
+                    </connections>
+                </textField>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="478-aC-3Fv">
+                    <rect key="frame" x="111" y="9" width="76" height="26"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="47l-eR-Ea7" id="ZX3-06-y8A">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="2BZ-Ou-BzW">
+                            <items>
+                                <menuItem title="Item 1" state="on" tag="1" id="47l-eR-Ea7"/>
+                                <menuItem title="Item 2" tag="2" id="avt-Gu-1MD"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <binding destination="C9l-jk-0iH" name="selectedTag" keyPath="objectValue.action" id="vLw-UL-1kd"/>
+                    </connections>
+                </popUpButton>
+            </subviews>
+            <connections>
+                <outlet property="textField" destination="vKD-JF-m7x" id="ty7-e6-lDV"/>
+            </connections>
+            <point key="canvasLocation" x="302" y="226"/>
+        </tableCellView>
+    </objects>
+</document>
