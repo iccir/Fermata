@@ -171,6 +171,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55416FFE1FDE0E9500D7529A /* Build configuration list for PBXNativeTarget "Fermata" */;
 			buildPhases = (
+				550C63B31FDF82F7007841BC /* rcbump */,
 				550C63951FDE3558007841BC /* Copy LoginItems */,
 				55416FEB1FDE0E9500D7529A /* Resources */,
 				55416FE91FDE0E9500D7529A /* Sources */,
@@ -247,6 +248,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		550C63B31FDF82F7007841BC /* rcbump */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = rcbump;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "which rcbump\n\nif [ $? -eq 0 ]; then\n    rcbump build\n    exit $?\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		550C637D1FDE349D007841BC /* Sources */ = {
