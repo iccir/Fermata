@@ -97,6 +97,12 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleUserDefaultsDidChangeNotification:)        name:NSUserDefaultsDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleRestlessApplicationDidUpdateNotification:) name:RestlessApplicationDidUpdateNotification object:nil];
 
+    [[NSDistributedNotificationCenter defaultCenter] addObserver: self 
+                                                        selector: @selector(_handleFermataUpdateNotification:)
+                                                            name: @"com.iccir.Fermata.Update"
+                                                          object: nil
+                                              suspensionBehavior: NSNotificationSuspensionBehaviorDeliverImmediately];
+
     [[NSWorkspace sharedWorkspace] addObserver:self forKeyPath:@"runningApplications" options:0 context:NULL];
 }
 
@@ -184,6 +190,12 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
 {
     [self _updateEngine];
     [self _saveState];
+}
+
+
+- (void) _handleFermataUpdateNotification:(NSNotification *)note
+{
+    [self _updateEngine];
 }
 
 
