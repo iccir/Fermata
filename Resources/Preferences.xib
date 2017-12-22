@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,14 +17,14 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="Preferences" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="796" width="440" height="272"/>
+            <rect key="contentRect" x="196" y="796" width="440" height="298"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="440" height="272"/>
+                <rect key="frame" x="0.0" y="0.0" width="440" height="298"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gab-eF-yyZ">
-                        <rect key="frame" x="18" y="235" width="447" height="17"/>
+                        <rect key="frame" x="18" y="261" width="447" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Prevent Lid Close Sleep when:" id="pe2-26-JFA">
                             <font key="font" metaFont="system"/>
@@ -32,14 +33,14 @@
                         </textFieldCell>
                     </textField>
                     <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="34" horizontalPageScroll="10" verticalLineScroll="34" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ueg-i7-wgh">
-                        <rect key="frame" x="20" y="99" width="400" height="128"/>
+                        <rect key="frame" x="20" y="169" width="400" height="84"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" ambiguous="YES" id="gyG-15-Uzu">
-                            <rect key="frame" x="1" y="1" width="398" height="126"/>
+                            <rect key="frame" x="1" y="1" width="398" height="82"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="32" rowSizeStyle="automatic" viewBased="YES" id="Nt2-aL-9ED">
-                                    <rect key="frame" x="0.0" y="0.0" width="398" height="126"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="398" height="82"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -71,15 +72,15 @@
                                                             </connections>
                                                         </imageView>
                                                         <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cqx-hD-U5I">
-                                                            <rect key="frame" x="218" y="2" width="177" height="27"/>
+                                                            <rect key="frame" x="218" y="2" width="177" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                            <popUpButtonCell key="cell" type="push" title="is preventing Idle Sleep" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" tag="2" imageScaling="proportionallyDown" inset="2" selectedItem="jIP-55-U9U" id="2TZ-mJ-Pve">
+                                                            <popUpButtonCell key="cell" type="push" title="is preventing Idle Sleep" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="2" imageScaling="proportionallyDown" inset="2" selectedItem="jIP-55-U9U" id="2TZ-mJ-Pve">
                                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                                 <font key="font" metaFont="menu"/>
                                                                 <menu key="menu" id="WhJ-LS-NBR">
                                                                     <items>
-                                                                        <menuItem title="is preventing Idle Sleep" tag="2" id="jIP-55-U9U"/>
-                                                                        <menuItem title="is running" state="on" tag="1" id="Omg-K6-6Oe"/>
+                                                                        <menuItem title="is preventing Idle Sleep" state="on" tag="2" id="jIP-55-U9U"/>
+                                                                        <menuItem title="is running" tag="1" id="Omg-K6-6Oe"/>
                                                                     </items>
                                                                 </menu>
                                                             </popUpButtonCell>
@@ -116,7 +117,7 @@
                             </subviews>
                         </clipView>
                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="kXl-ox-WgH">
-                            <rect key="frame" x="1" y="119" width="223" height="15"/>
+                            <rect key="frame" x="1" y="-14" width="0.0" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="nOP-u9-wT4">
@@ -136,7 +137,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k1b-Yi-WOy">
-                        <rect key="frame" x="14" y="60" width="206" height="32"/>
+                        <rect key="frame" x="14" y="132" width="206" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Add Application…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Xv2-3T-ONQ">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -146,12 +147,8 @@
                             <action selector="addApplication:" target="-2" id="N5o-5a-EVV"/>
                         </connections>
                     </button>
-                    <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="4sS-hg-u2T">
-                        <rect key="frame" x="20" y="52" width="400" height="5"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    </box>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TvP-9y-NaV">
-                        <rect key="frame" x="220" y="60" width="206" height="32"/>
+                        <rect key="frame" x="220" y="132" width="206" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Remove Application" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dSu-CD-pA9">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -167,9 +164,77 @@
                             </binding>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2z1-iy-Vch">
+                        <rect key="frame" x="99" y="100" width="117" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Update frequency:" id="Y3Z-a5-6mQ">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CBj-a6-F0H">
+                        <rect key="frame" x="224" y="94" width="122" height="26"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="5 seconds" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" tag="5" imageScaling="proportionallyDown" inset="2" selectedItem="rDR-nN-Rhf" id="zdN-iM-eB7">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="spw-7W-wDp">
+                                <items>
+                                    <menuItem title="5 seconds" tag="5" id="rDR-nN-Rhf"/>
+                                    <menuItem title="10 seconds" tag="10" id="XzA-Pt-l0S"/>
+                                    <menuItem title="15 seconds" tag="15" id="RNP-tn-DY9"/>
+                                    <menuItem title="30 seconds" tag="30" id="Csq-w7-ulS"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <binding destination="2iC-A2-4H1" name="selectedTag" keyPath="values.UpdateFrequency" id="z4G-H7-PdQ"/>
+                        </connections>
+                    </popUpButton>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ELG-al-0rG">
+                        <rect key="frame" x="224" y="62" width="122" height="26"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="None" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="VCH-pc-0UJ" id="S0C-09-C10">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="jYU-tB-a7T">
+                                <items>
+                                    <menuItem title="None" id="VCH-pc-0UJ"/>
+                                    <menuItem title="1 second" tag="1" id="QOb-j6-uTk"/>
+                                    <menuItem title="5 seconds" tag="5" id="eYJ-hl-3zG">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                    </menuItem>
+                                    <menuItem title="10 seconds" tag="10" id="aku-5p-TSo"/>
+                                    <menuItem title="15 seconds" tag="15" id="Kv0-J9-clX"/>
+                                    <menuItem title="30 seconds" tag="30" id="S0X-Ks-rA6"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                        <connections>
+                            <binding destination="2iC-A2-4H1" name="selectedTag" keyPath="values.ReenableDelay" id="Xlh-RX-0xt"/>
+                        </connections>
+                    </popUpButton>
+                    <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="2wx-3h-Ohu">
+                        <rect key="frame" x="20" y="126" width="400" height="5"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </box>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Yn-0Y-bJh">
+                        <rect key="frame" x="58" y="68" width="158" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Delay before re-enabling:" id="FLB-Hc-8NZ">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="WTt-HQ-54F">
+                        <rect key="frame" x="20" y="52" width="400" height="5"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </box>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="112" y="162"/>
+            <point key="canvasLocation" x="112" y="175"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="2iC-A2-4H1"/>
     </objects>

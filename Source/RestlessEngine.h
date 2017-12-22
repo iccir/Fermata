@@ -24,13 +24,14 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface RestlessEngine : NSObject
 
 - (NSArray<NSNumber *> *) pidsPreventingIdleSleep;
 
 - (void) preventLidCloseSleepWithDetailString:(NSString *)detailString;
-- (void) allowLidCloseSleep;
+- (void) allowLidCloseSleepAfter:(NSTimeInterval)delay;
 
-- (BOOL) isPreventingLidCloseSleep;
+@property (nonatomic, readonly, getter=isPreventingLidCloseSleep) BOOL preventingLidCloseSleep;
 
 @end

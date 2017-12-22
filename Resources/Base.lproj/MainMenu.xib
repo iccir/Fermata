@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
     </dependencies>
     <objects>
@@ -34,10 +35,17 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="0Nr-ZN-ctT"/>
-                <menuItem title="Quit Fermata" id="WQQ-QY-3is">
+                <menuItem title="About Fermata" id="WQQ-QY-3is">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="terminate:" target="-2" id="BRe-qa-kml"/>
+                        <action selector="orderFrontStandardAboutPanel:" target="-2" id="J1e-rK-3aQ"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="fnr-Sn-qRx"/>
+                <menuItem title="Quit Fermata" id="Ncd-or-p1W">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="terminate:" target="-2" id="Nd9-qM-n6z"/>
                     </connections>
                 </menuItem>
             </items>

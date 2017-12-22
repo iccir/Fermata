@@ -33,6 +33,8 @@
 static NSString * const LaunchAtLoginPreferenceKey        = @"LaunchAtLogin";
 static NSString * const RestlessApplicationsPreferenceKey = @"RestlessApplications";
 static NSString * const ManualPreventionKey               = @"ManualPrevention";
+static NSString * const UpdateFrequencyKey                = @"UpdateFrequency";
+static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
 
 @interface AppDelegate ()
@@ -59,8 +61,6 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
 
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    __weak id weakSelf = self;
-    
     NSDictionary *defaults = @{
         LaunchAtLoginPreferenceKey: @NO,
         ManualPreventionKey: @NO,
@@ -68,12 +68,17 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
             @"name": @"Embrace",
             @"bundle-identifier": @"com.iccir.Embrace",
             @"action": @( RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented )
-        } ]
+        } ],
+        
+        UpdateFrequencyKey: @10,
+        ReenableDelayKey:   @10
     };
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 
-    _engine     = [[RestlessEngine alloc] init];
+    _engine = [[RestlessEngine alloc] init];
+    [_engine addObserver:self forKeyPath:@"preventingLidCloseSleep" options:0 context:NULL];
+    
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:30.0];
 
     _onImage  = [NSImage imageNamed:@"StatusItemIconOn"];
@@ -83,11 +88,7 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
     [_statusItem setHighlightMode:YES];
     [_statusItem setMenu:[self statusItemMenu]];
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:10.0 repeats:YES block:^(NSTimer *timer) {
-        [weakSelf _updateEngine];
-    }];
-
-    [_timer setTolerance:5.0];
+    [self _updateTimer];
 
     [self _loadState];
 
@@ -117,6 +118,24 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
     
     return YES;
 }
+
+
+- (void) _updateTimer
+{
+    NSTimeInterval updateFrequency = [[NSUserDefaults standardUserDefaults] doubleForKey:UpdateFrequencyKey];
+    
+    if ([_timer timeInterval] != updateFrequency) {
+        [_timer invalidate];
+
+        __weak id weakSelf = self;
+        _timer = [NSTimer scheduledTimerWithTimeInterval:updateFrequency repeats:YES block:^(NSTimer *timer) {
+            [weakSelf _updateEngine];
+        }];
+
+        [_timer setTolerance:(updateFrequency < 2.0) ? 0.1 : 1.0];
+    }
+}
+
 
 
 #pragma mark - Private Methods
@@ -183,6 +202,7 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
 - (void) _handleUserDefaultsDidChangeNotification:(NSNotification *)note
 {
     [self _updateLaunchHelper];
+    [self _updateTimer];
 }
 
 
@@ -253,11 +273,9 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
     if (preventionDetails) {
         [_engine preventLidCloseSleepWithDetailString:preventionDetails];
     } else {
-        [_engine allowLidCloseSleep];
+        NSTimeInterval delay = [[NSUserDefaults standardUserDefaults] doubleForKey:ReenableDelayKey];
+        [_engine allowLidCloseSleepAfter:delay];
     }
-        
-    NSImage *image = [_engine isPreventingLidCloseSleep] ? _onImage : _offImage;
-    [_statusItem setImage:image];
 }
 
 
@@ -265,8 +283,14 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    [self _updateEngine];
-    [self _saveState];
+    if ([object isEqual:_engine]) {
+        NSImage *image = [_engine isPreventingLidCloseSleep] ? _onImage : _offImage;
+        [_statusItem setImage:image];
+
+    } else {
+        [self _updateEngine];
+        [self _saveState];
+    }
 }
 
 

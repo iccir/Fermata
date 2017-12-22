@@ -31,12 +31,31 @@
 @import AppKit;
 
 
+@interface RestlessEngine ()
+@property (nonatomic, getter=isPreventingLidCloseSleep) BOOL preventingLidCloseSleep;
+@end
+
+
 @implementation RestlessEngine {
     NSTimer *_timer;
     IOPMAssertionID _assertionID;
     NSDictionary *_bundleIDToApplicationMap;
 }
 
+
+#pragma mark - Private Methods
+
+- (void) _allowLidCloseSleep
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_allowLidCloseSleep) object:nil];
+
+    if (_assertionID) {
+        IOPMAssertionRelease(_assertionID);
+        _assertionID = kIOPMNullAssertionID;
+
+        [self setPreventingLidCloseSleep:NO];
+    }
+}
 
 
 #pragma mark - Public Methods
@@ -85,6 +104,8 @@
         sleep on lid close)
     */
 
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_allowLidCloseSleep) object:nil];
+
     IOReturn err = kIOReturnSuccess;
     
     if (!err) err = IOPMAssertionDeclareUserActivity(CFSTR("Fermata is preventing lid close sleep"), kIOPMUserActiveLocal, &_assertionID);
@@ -93,24 +114,19 @@
     if (!detailString) detailString = @"";
     if (!err) err = IOPMAssertionSetProperty(_assertionID, kIOPMAssertionDetailsKey, (__bridge CFStringRef)detailString);
 
-    if (err) {
-        [self allowLidCloseSleep];
-    }
-}
-
-
-- (void) allowLidCloseSleep
-{
     if (_assertionID) {
-        IOPMAssertionRelease(_assertionID);
-        _assertionID = kIOPMNullAssertionID;
+        [self setPreventingLidCloseSleep:YES];
+    }
+
+    if (err) {
+        [self _allowLidCloseSleep];
     }
 }
 
 
-- (BOOL) isPreventingLidCloseSleep
+- (void) allowLidCloseSleepAfter:(NSTimeInterval)delay
 {
-    return _assertionID != kIOPMNullAssertionID;
+    [self performSelector:@selector(_allowLidCloseSleep) withObject:nil afterDelay:delay];
 }
 
 
