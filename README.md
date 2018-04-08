@@ -1,6 +1,6 @@
 # Fermata
 
-macOS is a small utility which prevents Lid Close Sleep under certain conditions:
+Fermata is a small macOS utility which prevents Lid Close Sleep under certain conditions:
 
 1. The user manually checks the "Prevent Lid Close Sleep" menu item.
 2. A specified application is launched.
