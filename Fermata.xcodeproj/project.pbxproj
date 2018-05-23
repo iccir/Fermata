@@ -101,6 +101,7 @@
 		554170031FDE0EE000D7529A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = SOURCE_ROOT; };
 		554170041FDE0EE000D7529A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		55B4A59E20B4EC570034DF1B /* AppleSPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppleSPI.h; path = Source/AppleSPI.h; sourceTree = "<group>"; };
+		55B4A59F20B506CC0034DF1B /* HelperProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HelperProtocol.h; path = Source/HelperProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +142,7 @@
 		55406C6520B4E7A7001BA95B /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				55B4A59F20B506CC0034DF1B /* HelperProtocol.h */,
 				55406C6A20B4E82A001BA95B /* Helper-Info.plist */,
 				55406C6B20B4E82A001BA95B /* Helper-launchd.plist */,
 				55406C6620B4E7C2001BA95B /* Helper_main.m */,

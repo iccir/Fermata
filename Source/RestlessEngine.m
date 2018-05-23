@@ -26,12 +26,11 @@
 
 #import "RestlessApplication.h"
 #import "AppleSPI.h"
+#import "HelperProtocol.h"
 
 @import ServiceManagement;
 @import IOKit.pwr_mgt;
 @import AppKit;
-
-#define sHelperLabel "com.iccir.Fermata.Helper"
 
 
 @interface RestlessEngine ()
@@ -42,14 +41,16 @@
 @implementation RestlessEngine {
     NSTimer *_timer;
     NSDictionary *_bundleIDToApplicationMap;
+    
+    NSTimeInterval _checkDate;
+    NSInteger _helperVersion;
 }
 
 
 #pragma mark - Private Methods
 
-- (BOOL) _attempToBlessHelper:(NSError **)outError
+- (BOOL) _attemptToBlessHelper
 {
-    BOOL result = NO;
 
     AuthorizationItem   item   = { kSMRightBlessPrivilegedHelper, 0, NULL, 0 };
     AuthorizationRights rights = { 1, &item };
@@ -59,69 +60,68 @@
                                  kAuthorizationFlagExtendRights;
 
     AuthorizationRef authRef = NULL;
-    
+
     OSStatus status = AuthorizationCreate(&rights, kAuthorizationEmptyEnvironment, flags, &authRef);
 
-    if (status == errAuthorizationSuccess) {
-        CFErrorRef cfError = NULL;
-        result = SMJobBless(kSMDomainSystemLaunchd, CFSTR(sHelperLabel), authRef, &cfError);
+    if (status != errAuthorizationSuccess) {
+        NSLog(@"AuthorizationCreate failed: %ld", (long)status);
+        return NO;
+    }
 
-        if (cfError) {
-            NSError *nsError = CFBridgingRelease(cfError);
-            if (outError) *outError = nsError;
-        }
+    CFErrorRef cfError = NULL;
+    BOOL result = SMJobBless(kSMDomainSystemLaunchd, (__bridge CFStringRef)kHelperMachServiceName, authRef, &cfError);
+
+    if (!result || cfError) {
+        NSError *error = CFBridgingRelease(cfError);
+        NSLog(@"SMJobBless returned %ld: %@", (long)result, error);
+        return NO;
     }
     
-    return result;
+    return YES;
 }
 
 
-- (void) _launchHelperWithCommand:(NSString *)command callback:(void(^)(void))callback
+- (void) _launchHelperWithCommand:(NSString *)command reply:(void(^)(NSInteger))reply
 {
-    NSError *error = nil;
+    NSXPCConnection *connection = [[NSXPCConnection alloc] initWithMachServiceName:kHelperMachServiceName options:NSXPCConnectionPrivileged];
+    [connection setRemoteObjectInterface:[NSXPCInterface interfaceWithProtocol:@protocol(HelperProtocol)]];
 
-    // Attempt to create the connection to our helper tool
-    xpc_connection_t connection = xpc_connection_create_mach_service(sHelperLabel, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+    [connection setInvalidationHandler:^{
+        NSLog(@"Connection invalidation handler called.");
+    }];
 
-    // If we fail, we need to bless the helper
-    if (!connection) {
-        if ([self _attempToBlessHelper:&error]) {
-            connection = xpc_connection_create_mach_service(sHelperLabel, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
-        }
-    }
+    [connection resume];
     
-    // If we still fail, the user cancelled or something is wrong
-    if (!connection) {
-        [self setPreventingLidCloseSleep:NO];
-        return;
-    }
-
-    xpc_connection_set_event_handler(connection, ^(xpc_object_t event) {
-        xpc_type_t type = xpc_get_type(event);
-        
-        if (type == XPC_TYPE_ERROR) {
-            NSLog(@"Could not launch helper tool.");
-        }
-    });
+    id proxy = [connection remoteObjectProxyWithErrorHandler:^(NSError *error) {
+        NSLog(@"Couldn't get remote object: %@", error);
+    }];
     
-    xpc_connection_resume(connection);
-    
-    xpc_object_t request = xpc_dictionary_create(NULL, NULL, 0);
-    
-    xpc_dictionary_set_string(request, "command", [command UTF8String]);
-
     __weak id weakSelf = self;
-    xpc_connection_send_message_with_reply(connection, request, dispatch_get_main_queue(), ^(xpc_object_t event) {
-        [weakSelf _checkStatus];
-        if (callback) callback();
-    });
+    
+    void (^wrappedReply)(NSInteger) = ^(NSInteger arg) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf _checkStatus];
+        });
+
+        if (reply) reply(arg);
+    };
+    
+    if ([command isEqualToString:@"prevent"]) {
+        [proxy preventSleepWithReply:wrappedReply];
+        
+    } else if ([command isEqualToString:@"allow"]) {
+        [proxy allowSleepWithReply:wrappedReply];
+    
+    } else if ([command isEqualToString:@"version"]) {
+        [proxy requestVersionWithReply:wrappedReply];
+    }
 }
 
 
 - (void) _allowLidCloseSleep
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_allowLidCloseSleep) object:nil];
-    [self _launchHelperWithCommand:@"allow" callback:nil];
+    [self _launchHelperWithCommand:@"allow" reply:nil];
 }
 
 
@@ -134,7 +134,47 @@
 }
 
 
+- (void) _didReceiveHelperVersion:(NSInteger)version
+{
+    _helperVersion = version;
+    [[NSUserDefaults standardUserDefaults] setInteger:version forKey:@"HelperVersion"];
+
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_checkHelperVersionResult) object:nil];
+    [self _checkHelperVersionResult];
+}
+
+
+- (void) _checkHelperVersionResult
+{
+    if (_helperVersion != kHelperVersion) {
+        if (![self _attemptToBlessHelper]) {
+            _helperVersion = 0;
+        }
+    }
+}
+
+
 #pragma mark - Public Methods
+
+- (void) checkHelper
+{
+    __weak id weakSelf = self;
+
+    NSInteger lastKnownHelperVersion = [[NSUserDefaults standardUserDefaults] integerForKey:@"HelperVersion"];
+    
+    if (lastKnownHelperVersion != kHelperVersion) {
+        if (![self _attemptToBlessHelper]) {
+            return;
+        }
+    } 
+    
+    [self _launchHelperWithCommand:@"version" reply:^(NSInteger version) {
+        [weakSelf _didReceiveHelperVersion:version];
+    }];
+
+    [self performSelector:@selector(_checkHelperVersionResult) withObject:nil afterDelay:5.0];
+}
+
 
 - (NSArray<NSNumber *> *) pidsPreventingIdleSleep
 {
@@ -169,13 +209,17 @@
 
 - (void) allowLidCloseSleepWithCallback:(void (^)(void))callback
 {
-    [self _launchHelperWithCommand:@"allow" callback:callback];
+    if (_helperVersion) {
+        [self _launchHelperWithCommand:@"allow" reply:^(NSInteger result) {
+            callback();
+        }];
+    }
 }
 
 
 - (void) preventLidCloseSleep
 {
-    [self _launchHelperWithCommand:@"prevent" callback:nil];
+    [self _launchHelperWithCommand:@"prevent" reply:nil];
 }
 
 

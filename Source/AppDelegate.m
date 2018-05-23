@@ -81,6 +81,8 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     _engine = [[RestlessEngine alloc] init];
     [_engine addObserver:self forKeyPath:@"preventingLidCloseSleep" options:0 context:NULL];
     
+    [_engine checkHelper];
+    
     _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:30.0];
 
     _onImage  = [NSImage imageNamed:@"StatusItemIconOn"];

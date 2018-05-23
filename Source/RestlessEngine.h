@@ -29,6 +29,8 @@
 
 - (NSArray<NSNumber *> *) pidsPreventingIdleSleep;
 
+- (void) checkHelper;
+
 - (void) preventLidCloseSleep;
 - (void) allowLidCloseSleepAfter:(NSTimeInterval)delay;
 

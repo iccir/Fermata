@@ -23,91 +23,76 @@
 
 #import <Foundation/Foundation.h>
 
-#include <syslog.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h> 
-#include <xpc/xpc.h>
-
 #import "AppleSPI.h"
+#import "HelperProtocol.h"
 
 
-static void sPeerEventHandler(xpc_connection_t connection, xpc_object_t event)
+@interface Helper : NSObject <NSXPCListenerDelegate, HelperProtocol>
+@end
+
+@implementation Helper {
+    NSXPCListener *_listener;
+}
+
+
+- (instancetype) init
 {
-    xpc_type_t type = xpc_get_type(event);
-    
-    if (type != XPC_TYPE_ERROR) {
-        NSString *command = nil;
-        
-        const char *cString = xpc_dictionary_get_string(event, "command");
-        
-        if (!cString) {
-            NSLog(@"Fermata Helper: sPeerEventHandler(): cString is NULL");
-            return;
-        }
-        
-        if (cString) {
-            command = [[NSString alloc] initWithCString:cString encoding:NSUTF8StringEncoding];
-        }
-
-        BOOL ok = NO;
-        IOReturn err = 0;
-
-        if ([command isEqualToString:@"prevent"]) {
-            err = IOPMSetSystemPowerSetting(kIOPMSleepDisabledKey, kCFBooleanTrue);
-            if (!err) ok = YES;
-
-        } else if ([command isEqualToString:@"allow"]) {
-            err = IOPMSetSystemPowerSetting(kIOPMSleepDisabledKey, kCFBooleanFalse);
-            if (!err) ok = YES;
-
-        } else if ([command isEqualToString:@"ping"]) {
-            ok = YES;
-        }
-
-        xpc_connection_t remote = xpc_dictionary_get_remote_connection(event);
-        
-        xpc_object_t reply = xpc_dictionary_create_reply(event);
-        xpc_dictionary_set_bool(reply,  "ok",     ok);
-        xpc_dictionary_set_int64(reply, "error",  err);
-        xpc_connection_send_message(remote, reply);
-        
-    } else {
-        NSLog(@"Fermata Helper: sPeerEventHandler() received error event");
+    if (self = [super init]) {
+        _listener = [[NSXPCListener alloc] initWithMachServiceName:kHelperMachServiceName];
+        [_listener setDelegate:self];
     }
+
+    return self;
 }
 
 
-static void sConnectionHandler(xpc_connection_t connection)
+- (void) run
 {
-    xpc_connection_set_event_handler(connection, ^(xpc_object_t event) {
-        sPeerEventHandler(connection, event);
-    });
-    
-    xpc_connection_resume(connection);
+    [_listener resume];
+    [[NSRunLoop currentRunLoop] run];
 }
+
+
+- (BOOL) listener:(NSXPCListener *)listener shouldAcceptNewConnection:(NSXPCConnection *)newConnection
+{
+    [newConnection setExportedInterface:[NSXPCInterface interfaceWithProtocol:@protocol(HelperProtocol)]];
+    [newConnection setExportedObject:self];
+    [newConnection resume];
+    
+    return YES;
+}
+
+
+- (void) preventSleepWithReply:(void (^)(NSInteger error))reply
+{
+    NSInteger status = IOPMSetSystemPowerSetting(kIOPMSleepDisabledKey, kCFBooleanTrue);
+    if (reply) reply(status);
+}
+
+
+- (void) allowSleepWithReply:(void (^)(NSInteger error))reply
+{
+    NSInteger status = IOPMSetSystemPowerSetting(kIOPMSleepDisabledKey, kCFBooleanFalse);
+    if (reply) reply(status);
+}
+
+
+- (void) requestVersionWithReply:(void (^)(NSInteger version))reply
+{
+    if (reply) reply(kHelperVersion);
+}
+
+
+@end
 
 
 int main(int argc, char *argv[])
 {
-@autoreleasepool
-{
-    xpc_connection_t service = xpc_connection_create_mach_service("com.iccir.Fermata.Helper", dispatch_get_main_queue(), XPC_CONNECTION_MACH_SERVICE_LISTENER);
-    
-    if (!service) {
-        syslog(LOG_NOTICE, "xpc_connection_create_mach_service() failed");
-        exit(1);
+    @autoreleasepool {
+        Helper *helper = [[Helper alloc] init];
+        [helper run];
     }
-    
-    xpc_connection_set_event_handler(service, ^(xpc_object_t connection) {
-        sConnectionHandler(connection);
-    });
-    
-    xpc_connection_resume(service);
-    
-    dispatch_main();
-}
+
     return 0;
 }
 
