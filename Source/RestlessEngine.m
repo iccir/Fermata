@@ -25,10 +25,13 @@
 #import "RestlessEngine.h"
 
 #import "RestlessApplication.h"
+#import "AppleSPI.h"
 
-
+@import ServiceManagement;
 @import IOKit.pwr_mgt;
 @import AppKit;
+
+#define sHelperLabel "com.iccir.Fermata.Helper"
 
 
 @interface RestlessEngine ()
@@ -38,23 +41,96 @@
 
 @implementation RestlessEngine {
     NSTimer *_timer;
-    IOPMAssertionID _assertionID;
     NSDictionary *_bundleIDToApplicationMap;
 }
 
 
 #pragma mark - Private Methods
 
+- (BOOL) _attempToBlessHelper:(NSError **)outError
+{
+    BOOL result = NO;
+
+    AuthorizationItem   item   = { kSMRightBlessPrivilegedHelper, 0, NULL, 0 };
+    AuthorizationRights rights = { 1, &item };
+    AuthorizationFlags  flags  = kAuthorizationFlagDefaults           |
+                                 kAuthorizationFlagInteractionAllowed |
+                                 kAuthorizationFlagPreAuthorize       |
+                                 kAuthorizationFlagExtendRights;
+
+    AuthorizationRef authRef = NULL;
+    
+    OSStatus status = AuthorizationCreate(&rights, kAuthorizationEmptyEnvironment, flags, &authRef);
+
+    if (status == errAuthorizationSuccess) {
+        CFErrorRef cfError = NULL;
+        result = SMJobBless(kSMDomainSystemLaunchd, CFSTR(sHelperLabel), authRef, &cfError);
+
+        if (cfError) {
+            NSError *nsError = CFBridgingRelease(cfError);
+            if (outError) *outError = nsError;
+        }
+    }
+    
+    return result;
+}
+
+
+- (void) _launchHelperWithCommand:(NSString *)command callback:(void(^)(void))callback
+{
+    NSError *error = nil;
+
+    // Attempt to create the connection to our helper tool
+    xpc_connection_t connection = xpc_connection_create_mach_service(sHelperLabel, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+
+    // If we fail, we need to bless the helper
+    if (!connection) {
+        if ([self _attempToBlessHelper:&error]) {
+            connection = xpc_connection_create_mach_service(sHelperLabel, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+        }
+    }
+    
+    // If we still fail, the user cancelled or something is wrong
+    if (!connection) {
+        [self setPreventingLidCloseSleep:NO];
+        return;
+    }
+
+    xpc_connection_set_event_handler(connection, ^(xpc_object_t event) {
+        xpc_type_t type = xpc_get_type(event);
+        
+        if (type == XPC_TYPE_ERROR) {
+            NSLog(@"Could not launch helper tool.");
+        }
+    });
+    
+    xpc_connection_resume(connection);
+    
+    xpc_object_t request = xpc_dictionary_create(NULL, NULL, 0);
+    
+    xpc_dictionary_set_string(request, "command", [command UTF8String]);
+
+    __weak id weakSelf = self;
+    xpc_connection_send_message_with_reply(connection, request, dispatch_get_main_queue(), ^(xpc_object_t event) {
+        [weakSelf _checkStatus];
+        if (callback) callback();
+    });
+}
+
+
 - (void) _allowLidCloseSleep
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_allowLidCloseSleep) object:nil];
+    [self _launchHelperWithCommand:@"allow" callback:nil];
+}
 
-    if (_assertionID) {
-        IOPMAssertionRelease(_assertionID);
-        _assertionID = kIOPMNullAssertionID;
 
-        [self setPreventingLidCloseSleep:NO];
-    }
+- (void) _checkStatus
+{
+    NSDictionary *dictionary = CFBridgingRelease(IOPMCopySystemPowerSettings());
+    
+    BOOL isPreventingLidCloseSleep = [[dictionary objectForKey:(__bridge id)kIOPMSleepDisabledKey] boolValue];
+    [self setPreventingLidCloseSleep:isPreventingLidCloseSleep];
 }
 
 
@@ -91,36 +167,21 @@
 }
 
 
-- (void) preventLidCloseSleepWithDetailString:(NSString *)detailString
+- (void) allowLidCloseSleepWithCallback:(void (^)(void))callback
 {
-    /*
-        See usage of kIOPMAssertionAppliesOnLidClose in IOKitUser and PowerManagement projects.
-        This property is only valid for kIOPMAssertionUserIsActive (created by IOPMAssertionDeclareUserActivity).
+    [self _launchHelperWithCommand:@"allow" callback:callback];
+}
 
-        This sets the kAssertionLidStateModifier on the assertion, which eventually increments lidSleepCount
-        in PMAssertions.c's setClamshellSleepState().
-        
-        When lidSleepCount is non-zero, kPMSetClamshellSleepState is eventually called with 0 (thus preventing
-        sleep on lid close)
-    */
 
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_allowLidCloseSleep) object:nil];
+- (void) preventLidCloseSleep
+{
+    [self _launchHelperWithCommand:@"prevent" callback:nil];
+}
 
-    IOReturn err = kIOReturnSuccess;
-    
-    if (!err) err = IOPMAssertionDeclareUserActivity(CFSTR("Fermata is preventing lid close sleep"), kIOPMUserActiveLocal, &_assertionID);
-    if (!err) err = IOPMAssertionSetProperty(_assertionID, CFSTR("AppliesOnLidClose"), kCFBooleanTrue);
-    
-    if (!detailString) detailString = @"";
-    if (!err) err = IOPMAssertionSetProperty(_assertionID, kIOPMAssertionDetailsKey, (__bridge CFStringRef)detailString);
 
-    if (_assertionID) {
-        [self setPreventingLidCloseSleep:YES];
-    }
-
-    if (err) {
-        [self _allowLidCloseSleep];
-    }
+- (BOOL) isPreventingLidCloseSleep
+{
+    return _preventingLidCloseSleep;
 }
 
 

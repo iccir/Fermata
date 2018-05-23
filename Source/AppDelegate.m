@@ -54,6 +54,8 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     PreferencesController *_preferencesController;
     NSTimer *_timer;
 
+    BOOL _applicationIsTerminating;
+
     BOOL _manualPreventionActive;
     NSArrayController *_applicationsController;
 }
@@ -92,7 +94,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
     [self _loadState];
 
-    [self _updateEngine];
+    [self _updateEngineManually:YES];
     [self _updateLaunchHelper];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleUserDefaultsDidChangeNotification:)        name:NSUserDefaultsDidChangeNotification object:nil];
@@ -105,6 +107,18 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
                                               suspensionBehavior: NSNotificationSuspensionBehaviorDeliverImmediately];
 
     [[NSWorkspace sharedWorkspace] addObserver:self forKeyPath:@"runningApplications" options:0 context:NULL];
+}
+
+
+- (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)sender
+{
+    _applicationIsTerminating = YES;
+    
+    [_engine allowLidCloseSleepWithCallback:^{
+        [[NSApplication sharedApplication] replyToApplicationShouldTerminate:YES];
+    }];
+
+    return NSTerminateLater;
 }
 
 
@@ -129,7 +143,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
         __weak id weakSelf = self;
         _timer = [NSTimer scheduledTimerWithTimeInterval:updateFrequency repeats:YES block:^(NSTimer *timer) {
-            [weakSelf _updateEngine];
+            [weakSelf _updateEngineManually:NO];
         }];
 
         [_timer setTolerance:(updateFrequency < 2.0) ? 0.1 : 1.0];
@@ -208,32 +222,34 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
 - (void) _handleRestlessApplicationDidUpdateNotification:(NSNotification *)note
 {
-    [self _updateEngine];
+    [self _updateEngineManually:NO];
     [self _saveState];
 }
 
 
 - (void) _handleFermataUpdateNotification:(NSNotification *)note
 {
-    [self _updateEngine];
+    [self _updateEngineManually:NO];
 }
 
 
-- (void) _updateEngine
+- (void) _updateEngineManually:(BOOL)isManual
 {
-    NSString *preventionDetails = nil;
+    BOOL shouldPrevent = NO;
     NSMutableDictionary *bundleIDToApplicationMap = nil;
+
+    if (_applicationIsTerminating) return;
 
     // Step 1 - Check manual trigger
     //
     if (_manualPreventionActive) {
-        preventionDetails = @"Prevention requested by user";
+        shouldPrevent = YES;
     }
 
     // Step 2a - Check RestlessActionPreventLidCloseSleepWhenRunning
     // Step 2b - Also build bundleIDToApplicationMap
     //
-    if (!preventionDetails) {
+    if (!shouldPrevent) {
         bundleIDToApplicationMap = [NSMutableDictionary dictionary];
 
         for (RestlessApplication *application in [_applicationsController arrangedObjects]) {
@@ -246,7 +262,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
             if (action == RestlessActionPreventLidCloseSleepWhenRunning) {
                 if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:bundleIdentifier] count]) {
-                    preventionDetails = [NSString stringWithFormat:@"%@ is running", [application name]];
+                    shouldPrevent = YES;
                     break;
                 }
             }
@@ -255,7 +271,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     
     // Step 3 - Check RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented
     //
-    if (!preventionDetails) {
+    if (!shouldPrevent) {
         for (NSNumber *pidNumber in [_engine pidsPreventingIdleSleep]) {
             pid_t pid = (pid_t)[pidNumber integerValue];
 
@@ -264,16 +280,17 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
             RestlessApplication *app = [bundleIDToApplicationMap objectForKey:bundleIdentifier];
             
             if ([app action] == RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented) {
-                preventionDetails = [NSString stringWithFormat:@"%@ is preventing idle sleep", [app name]];
+                shouldPrevent = YES;
                 break;
             }
         }
     }
 
-    if (preventionDetails) {
-        [_engine preventLidCloseSleepWithDetailString:preventionDetails];
+    if (shouldPrevent) {
+        [_engine preventLidCloseSleep];
     } else {
         NSTimeInterval delay = [[NSUserDefaults standardUserDefaults] doubleForKey:ReenableDelayKey];
+        if (isManual) delay = 0;
         [_engine allowLidCloseSleepAfter:delay];
     }
 }
@@ -288,7 +305,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
         [_statusItem setImage:image];
 
     } else {
-        [self _updateEngine];
+        [self _updateEngineManually:NO];
         [self _saveState];
     }
 }
@@ -300,7 +317,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 {
     _manualPreventionActive = !_manualPreventionActive;
 
-    [self _updateEngine];
+    [self _updateEngineManually:YES];
     [self _saveState];
 }
 

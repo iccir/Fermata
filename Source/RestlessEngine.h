@@ -29,8 +29,11 @@
 
 - (NSArray<NSNumber *> *) pidsPreventingIdleSleep;
 
-- (void) preventLidCloseSleepWithDetailString:(NSString *)detailString;
+- (void) preventLidCloseSleep;
 - (void) allowLidCloseSleepAfter:(NSTimeInterval)delay;
+
+// For application termination
+- (void) allowLidCloseSleepWithCallback:(void (^)(void))callback;
 
 @property (nonatomic, readonly, getter=isPreventingLidCloseSleep) BOOL preventingLidCloseSleep;
 
