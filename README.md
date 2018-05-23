@@ -29,9 +29,15 @@ Some applications may not properly prevent Idle Sleep. For these apps, use the "
 
 ## How?
 
-By examining Apple's [IOKitUser](https://opensource.apple.com/source/IOKitUser/) and [PowerManagement](https://opensource.apple.com/source/PowerManagement) projects, I learned of a private key (`kIOPMAssertionAppliesOnLidClose`) which can be used in conjunction with `IOPMAssertionDeclareUserActivity()` to prevent Lid Close sleep.
-
 Note: this is private SPI and is **unsupported by Apple**. It could break in the future; it could cause your computer to explode; it could cause the Apple Power Management Team to show up at my doorstep and angrily chastise me; etc.
+
+#### Fermata 1.1
+
+In a macOS 10.13 update, Apple protected the private `kIOPMAssertionAppliesOnLidClose` with the `com.apple.private.iokit.assertonlidclose` restricted entitlement. Fortunately, [lozzd](https://github.com/lozzd) suggested the `pmset -b disablesleep 1` command, which Fermata now uses.
+
+#### Fermata 1.0
+
+By examining Apple's [IOKitUser](https://opensource.apple.com/source/IOKitUser/) and [PowerManagement](https://opensource.apple.com/source/PowerManagement) projects, I learned of a private key (`kIOPMAssertionAppliesOnLidClose`) which can be used in conjunction with `IOPMAssertionDeclareUserActivity()` to prevent Lid Close sleep.
 
 I've filed [rdar://35954315](http://openradar.appspot.com/radar?id=4931350570205184) for a public API solution to this problem.
 
