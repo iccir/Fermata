@@ -219,6 +219,7 @@
 
 - (void) preventLidCloseSleep
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_allowLidCloseSleep) object:nil];
     [self _launchHelperWithCommand:@"prevent" reply:nil];
 }
 

@@ -33,6 +33,7 @@
 static NSString * const LaunchAtLoginPreferenceKey        = @"LaunchAtLogin";
 static NSString * const RestlessApplicationsPreferenceKey = @"RestlessApplications";
 static NSString * const ManualPreventionKey               = @"ManualPrevention";
+static NSString * const ManualDurationKey                 = @"ManualDuration";
 static NSString * const UpdateFrequencyKey                = @"UpdateFrequency";
 static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
@@ -55,8 +56,11 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     NSTimer *_timer;
 
     BOOL _applicationIsTerminating;
-
+    
     BOOL _manualPreventionActive;
+    NSTimeInterval _manualPreventionStartTime;
+    NSTimer *_manualPreventionTimer;
+
     NSArrayController *_applicationsController;
 }
 
@@ -73,7 +77,8 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
         } ],
         
         UpdateFrequencyKey: @10,
-        ReenableDelayKey:   @10
+        ReenableDelayKey:   @10,
+        ManualDurationKey:  @10
     };
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -130,6 +135,12 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
     if (action == @selector(preventLidCloseSleep:)) {
         [menuItem setState:(_manualPreventionActive ? NSOnState : NSOffState)];
+
+        if ([[NSUserDefaults standardUserDefaults] integerForKey:ManualDurationKey] > 0) {
+            [menuItem setTitle:@"Postpone Lid Close Sleep"];
+        } else {
+            [menuItem setTitle:@"Prevent Lid Close Sleep"];
+        }
     }
     
     return YES;
@@ -166,8 +177,8 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
         [applications addObject:[[RestlessApplication alloc] initWithDictionary:dictionary]];
     }
 
-    _manualPreventionActive = [defaults boolForKey:ManualPreventionKey];
-
+    [self _setManualPreventionActive:[defaults boolForKey:ManualPreventionKey]];
+    
     _applicationsController = [[NSArrayController alloc] initWithContent:applications];
     [_applicationsController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:NULL];
     
@@ -235,6 +246,94 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 }
 
 
+- (void) _setManualPreventionActive:(BOOL)manualPreventionActive
+{
+    if (_manualPreventionActive != manualPreventionActive) {
+        _manualPreventionActive = manualPreventionActive;
+        _manualPreventionStartTime = manualPreventionActive ? [NSDate timeIntervalSinceReferenceDate] : 0;
+    }
+
+    if (_manualPreventionActive && !_manualPreventionTimer) {
+        __weak id weakSelf = self;
+
+        _manualPreventionTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 repeats:YES block:^(NSTimer *timer) {
+            [weakSelf _updateStatusItem];
+        }];
+
+    } else if (!_manualPreventionActive && _manualPreventionTimer) {
+        [_manualPreventionTimer invalidate];
+        _manualPreventionTimer = nil;
+    }
+
+    [self _updateEngineManually:YES];
+    [self _saveState];
+}
+
+
+- (NSImage *) _statusItemImageWithPercentage:(CGFloat)percentage
+{
+    NSImage *onImage = _onImage;
+
+    CGRect onImageRect = CGRectZero;
+    onImageRect.size = [onImage size];
+
+    CGRect masterRect = onImageRect;
+    masterRect.size.height += 4;
+    onImageRect.origin.y += 2;
+    
+    NSImage *image = [NSImage imageWithSize:masterRect.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+        [onImage drawInRect:onImageRect];
+        
+        CGRect barRect = CGRectInset(masterRect, 2, 0);
+        barRect.size.height = 2;
+        [[NSBezierPath bezierPathWithRoundedRect:barRect xRadius:1 yRadius:1] addClip];
+
+        [[NSColor colorWithWhite:0.0 alpha:0.25] set];
+        [[NSBezierPath bezierPathWithRect:barRect] fill];
+
+        CGRect activeBarRect = barRect;
+        activeBarRect.size.width *= percentage;
+        [[NSColor blackColor] set];
+        [[NSBezierPath bezierPathWithRect:activeBarRect] fill];
+    
+        return YES;
+    }];
+
+    [image setTemplate:YES];
+
+    return image;
+}
+
+
+- (void) _updateStatusItem
+{
+    NSImage *image = nil;
+
+    if ([_engine isPreventingLidCloseSleep]) {
+        NSInteger durationInMinutes = [[NSUserDefaults standardUserDefaults] integerForKey:ManualDurationKey];
+
+        if (_manualPreventionActive && durationInMinutes) {
+            NSTimeInterval duration  = durationInMinutes * 60;
+            NSTimeInterval remaining = (_manualPreventionStartTime + duration) - [NSDate timeIntervalSinceReferenceDate];
+        
+            CGFloat percent = remaining / duration;
+            if (percent > 1) percent = 1;
+            if (percent < 0) percent = 0;
+        
+            image = [self _statusItemImageWithPercentage:percent];
+
+        } else {
+            image = _onImage;
+        }
+
+    } else {
+        image = _offImage;
+    }
+    
+    [_statusItem setImage:image];
+}
+
+
 - (void) _updateEngineManually:(BOOL)isManual
 {
     BOOL shouldPrevent = NO;
@@ -242,10 +341,25 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
     if (_applicationIsTerminating) return;
 
+    NSTimeInterval reenableDelay = [[NSUserDefaults standardUserDefaults] doubleForKey:ReenableDelayKey];
+    if (isManual) reenableDelay = 0;
+
     // Step 1 - Check manual trigger
     //
     if (_manualPreventionActive) {
         shouldPrevent = YES;
+        
+        NSInteger durationInMinutes = [[NSUserDefaults standardUserDefaults] integerForKey:ManualDurationKey];
+
+        if (durationInMinutes) {
+            NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+
+            if (now > (_manualPreventionStartTime + (durationInMinutes * 60.0))) {
+                [self _setManualPreventionActive:NO];
+                shouldPrevent = NO;
+                reenableDelay = 0;
+            }
+        }
     }
 
     // Step 2a - Check RestlessActionPreventLidCloseSleepWhenRunning
@@ -291,9 +405,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     if (shouldPrevent) {
         [_engine preventLidCloseSleep];
     } else {
-        NSTimeInterval delay = [[NSUserDefaults standardUserDefaults] doubleForKey:ReenableDelayKey];
-        if (isManual) delay = 0;
-        [_engine allowLidCloseSleepAfter:delay];
+        [_engine allowLidCloseSleepAfter:reenableDelay];
     }
 }
 
@@ -303,8 +415,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([object isEqual:_engine]) {
-        NSImage *image = [_engine isPreventingLidCloseSleep] ? _onImage : _offImage;
-        [_statusItem setImage:image];
+        [self _updateStatusItem];
 
     } else {
         [self _updateEngineManually:NO];
@@ -317,10 +428,11 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
 - (IBAction) preventLidCloseSleep:(id)sender
 {
-    _manualPreventionActive = !_manualPreventionActive;
-
-    [self _updateEngineManually:YES];
-    [self _saveState];
+    if (!_manualPreventionActive) {
+        [self _setManualPreventionActive:YES];
+    } else {
+        [self _setManualPreventionActive:NO];
+    }
 }
 
 
