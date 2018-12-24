@@ -25,6 +25,6 @@
 
 @interface PreferencesController : NSWindowController
 
-@property (nonatomic) NSArrayController *applicationsController;
+@property (nonatomic) NSArrayController *entryArrayController;
 
 @end

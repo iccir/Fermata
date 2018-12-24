@@ -22,25 +22,25 @@
 */
 
 
-#import "RestlessApplication.h"
+#import "Entry.h"
 
-NSString * const RestlessApplicationDidUpdateNotification = @"RestlessApplicationDidUpdateNotification";
+NSString * const EntryDidUpdateNotification = @"EntryDidUpdateNotification";
 
 @import AppKit;
 
 static NSString *sNameKey             = @"name";
 static NSString *sBundleIdentifierKey = @"bundle-identifier";
-static NSString *sActionKey           = @"action";
+static NSString *sTypeKey             = @"action";
 
 
-@implementation RestlessApplication
+@implementation Entry
 
 - (instancetype) initWithDictionary:(NSDictionary *)dictionary
 {
     if ((self = [self init])) {
         _name             =  [dictionary objectForKey:sNameKey];
         _bundleIdentifier =  [dictionary objectForKey:sBundleIdentifierKey];
-        _action           = [[dictionary objectForKey:sActionKey] integerValue];
+        _type             = [[dictionary objectForKey:sTypeKey] integerValue];
     }
     
     return self;
@@ -53,7 +53,7 @@ static NSString *sActionKey           = @"action";
     
     if (_name)             [result setObject:_name             forKey:sNameKey];
     if (_bundleIdentifier) [result setObject:_bundleIdentifier forKey:sBundleIdentifierKey];
-    if (_action)           [result setObject:@(_action)        forKey:sActionKey];
+    if (_type)             [result setObject:@(_type)          forKey:sTypeKey];
 
     return result;
 }
@@ -72,11 +72,11 @@ static NSString *sActionKey           = @"action";
 }
 
 
-- (void) setAction:(RestlessAction)action
+- (void) setType:(EntryType)type
 {
-    if (_action != action) {
-        _action = action;
-        [[NSNotificationCenter defaultCenter] postNotificationName:RestlessApplicationDidUpdateNotification object:self];
+    if (_type != type) {
+        _type = type;
+        [[NSNotificationCenter defaultCenter] postNotificationName:EntryDidUpdateNotification object:self];
     }
 }
 

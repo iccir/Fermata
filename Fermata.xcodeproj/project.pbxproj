@@ -10,9 +10,8 @@
 		550C637C1FDE334E007841BC /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550C637B1FDE334E007841BC /* Preferences.xib */; };
 		550C63941FDE353A007841BC /* Launch Fermata.app in Resources */ = {isa = PBXBuildFile; fileRef = 550C63811FDE349D007841BC /* Launch Fermata.app */; };
 		550C63961FDE3563007841BC /* Launch Fermata.app in Copy LoginItems */ = {isa = PBXBuildFile; fileRef = 550C63811FDE349D007841BC /* Launch Fermata.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		550C63A21FDE366A007841BC /* RestlessApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C639F1FDE366A007841BC /* RestlessApplication.m */; };
+		550C63A21FDE366A007841BC /* Entry.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C639F1FDE366A007841BC /* Entry.m */; };
 		550C63A31FDE366A007841BC /* RestlessEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C63A01FDE366A007841BC /* RestlessEngine.m */; };
-		550C63A61FDE3695007841BC /* LaunchFermata_Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 550C63A41FDE3695007841BC /* LaunchFermata_Info.plist */; };
 		550C63AB1FDE4D8A007841BC /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 550C63AA1FDE4D8A007841BC /* PreferencesController.m */; };
 		550C63AD1FDE5B89007841BC /* TableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550C63AC1FDE5B89007841BC /* TableCell.xib */; };
 		550C63B21FDE94C7007841BC /* Fermata.icns in Resources */ = {isa = PBXBuildFile; fileRef = 550C63B11FDE94C6007841BC /* Fermata.icns */; };
@@ -79,8 +78,8 @@
 		550C637B1FDE334E007841BC /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Preferences.xib; path = Resources/Preferences.xib; sourceTree = "<group>"; };
 		550C63811FDE349D007841BC /* Launch Fermata.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Launch Fermata.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		550C639C1FDE365D007841BC /* Launcher_main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Launcher_main.m; path = Source/Launcher_main.m; sourceTree = "<group>"; };
-		550C639E1FDE366A007841BC /* RestlessApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RestlessApplication.h; path = Source/RestlessApplication.h; sourceTree = "<group>"; };
-		550C639F1FDE366A007841BC /* RestlessApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RestlessApplication.m; path = Source/RestlessApplication.m; sourceTree = "<group>"; };
+		550C639E1FDE366A007841BC /* Entry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entry.h; path = Source/Entry.h; sourceTree = "<group>"; };
+		550C639F1FDE366A007841BC /* Entry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Entry.m; path = Source/Entry.m; sourceTree = "<group>"; };
 		550C63A01FDE366A007841BC /* RestlessEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RestlessEngine.m; path = Source/RestlessEngine.m; sourceTree = "<group>"; };
 		550C63A11FDE366A007841BC /* RestlessEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RestlessEngine.h; path = Source/RestlessEngine.h; sourceTree = "<group>"; };
 		550C63A41FDE3695007841BC /* LaunchFermata_Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = LaunchFermata_Info.plist; path = Resources/LaunchFermata_Info.plist; sourceTree = "<group>"; };
@@ -192,8 +191,8 @@
 				554170041FDE0EE000D7529A /* AppDelegate.m */,
 				550C63A91FDE4D8A007841BC /* PreferencesController.h */,
 				550C63AA1FDE4D8A007841BC /* PreferencesController.m */,
-				550C639E1FDE366A007841BC /* RestlessApplication.h */,
-				550C639F1FDE366A007841BC /* RestlessApplication.m */,
+				550C639E1FDE366A007841BC /* Entry.h */,
+				550C639F1FDE366A007841BC /* Entry.m */,
 				550C63A11FDE366A007841BC /* RestlessEngine.h */,
 				550C63A01FDE366A007841BC /* RestlessEngine.m */,
 				554170021FDE0EE000D7529A /* main.m */,
@@ -243,11 +242,11 @@
 			buildConfigurationList = 55416FFE1FDE0E9500D7529A /* Build configuration list for PBXNativeTarget "Fermata" */;
 			buildPhases = (
 				550C63B31FDF82F7007841BC /* rcbump */,
-				550C63951FDE3558007841BC /* Copy LoginItems */,
-				55416FEB1FDE0E9500D7529A /* Resources */,
 				55416FE91FDE0E9500D7529A /* Sources */,
 				55416FEA1FDE0E9500D7529A /* Frameworks */,
+				55416FEB1FDE0E9500D7529A /* Resources */,
 				55406C6E20B4E915001BA95B /* CopyFiles */,
+				550C63951FDE3558007841BC /* Copy LoginItems */,
 			);
 			buildRules = (
 			);
@@ -321,7 +320,6 @@
 				55416FF41FDE0E9500D7529A /* Assets.xcassets in Resources */,
 				550C637C1FDE334E007841BC /* Preferences.xib in Resources */,
 				55416FF71FDE0E9500D7529A /* MainMenu.xib in Resources */,
-				550C63A61FDE3695007841BC /* LaunchFermata_Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +338,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "which rcbump\n\nif [ $? -eq 0 ]; then\n    rcbump build\n    exit $?\nfi";
+			shellScript = "which rcbump\n\nif [ $? -eq 0 ]; then\n    rcbump build\n    exit $?\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -365,7 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				550C63A21FDE366A007841BC /* RestlessApplication.m in Sources */,
+				550C63A21FDE366A007841BC /* Entry.m in Sources */,
 				554170061FDE0EE000D7529A /* AppDelegate.m in Sources */,
 				550C63AB1FDE4D8A007841BC /* PreferencesController.m in Sources */,
 				550C63A31FDE366A007841BC /* RestlessEngine.m in Sources */,

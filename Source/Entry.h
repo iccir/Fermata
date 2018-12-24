@@ -24,16 +24,16 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const RestlessApplicationDidUpdateNotification;
+extern NSString * const EntryDidUpdateNotification;
 
-typedef NS_ENUM(NSInteger, RestlessAction) {
-    RestlessActionNone,
-    RestlessActionPreventLidCloseSleepWhenRunning,
-    RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented
+typedef NS_ENUM(NSInteger, EntryType) {
+    EntryTypeNone,
+    EntryTypePreventLidCloseSleepWhenRunning,
+    EntryTypePreventLidCloseSleepWhenIdleSleepPrevented
 };
 
 
-@interface RestlessApplication : NSObject
+@interface Entry : NSObject
 
 - (instancetype) initWithDictionary:(NSDictionary *)dictionary;
 
@@ -42,6 +42,6 @@ typedef NS_ENUM(NSInteger, RestlessAction) {
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *bundleIdentifier;
 
-@property (nonatomic) RestlessAction action;
+@property (nonatomic) EntryType type;
 
 @end

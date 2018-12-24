@@ -25,7 +25,7 @@
 #import "AppDelegate.h"
 #import "RestlessEngine.h"
 #import "PreferencesController.h"
-#import "RestlessApplication.h"
+#import "Entry.h"
 
 
 @import ServiceManagement;
@@ -61,7 +61,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     NSTimeInterval _manualPreventionStartTime;
     NSTimer *_manualPreventionTimer;
 
-    NSArrayController *_applicationsController;
+    NSArrayController *_entryArrayController;
 }
 
 
@@ -73,7 +73,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
         RestlessApplicationsPreferenceKey: @[ @{
             @"name": @"Embrace",
             @"bundle-identifier": @"com.iccir.Embrace",
-            @"action": @( RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented )
+            @"action": @( EntryTypePreventLidCloseSleepWhenIdleSleepPrevented )
         } ],
         
         UpdateFrequencyKey: @10,
@@ -104,8 +104,8 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     [self _updateEngineManually:YES];
     [self _updateLaunchHelper];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleUserDefaultsDidChangeNotification:)        name:NSUserDefaultsDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleRestlessApplicationDidUpdateNotification:) name:RestlessApplicationDidUpdateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleUserDefaultsDidChangeNotification:) name:NSUserDefaultsDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_handleEntryDidUpdateNotification:)        name:EntryDidUpdateNotification          object:nil];
 
     [[NSDistributedNotificationCenter defaultCenter] addObserver: self 
                                                         selector: @selector(_handleFermataUpdateNotification:)
@@ -171,19 +171,19 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 {
     NSUserDefaults *defaults     = [NSUserDefaults standardUserDefaults];
     NSArray        *dictionaries = [defaults objectForKey:RestlessApplicationsPreferenceKey];
-    NSMutableArray *applications = [NSMutableArray array];
+    NSMutableArray *entryArray   = [NSMutableArray array];
 
     for (NSDictionary *dictionary in dictionaries) {
-        [applications addObject:[[RestlessApplication alloc] initWithDictionary:dictionary]];
+        [entryArray addObject:[[Entry alloc] initWithDictionary:dictionary]];
     }
 
     [self _setManualPreventionActive:[defaults boolForKey:ManualPreventionKey]];
     
-    _applicationsController = [[NSArrayController alloc] initWithContent:applications];
-    [_applicationsController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:NULL];
+    _entryArrayController = [[NSArrayController alloc] initWithContent:entryArray];
+    [_entryArrayController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:NULL];
     
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
-    [_applicationsController setSortDescriptors:@[ sortDescriptor ]];
+    [_entryArrayController setSortDescriptors:@[ sortDescriptor ]];
 }
 
 
@@ -191,8 +191,8 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 {
     NSMutableArray *dictionaries = [NSMutableArray array];
 
-    for (RestlessApplication *application in [_applicationsController arrangedObjects]) {
-        [dictionaries addObject:[application dictionaryRepresentation]];
+    for (Entry *entry in [_entryArrayController arrangedObjects]) {
+        [dictionaries addObject:[entry dictionaryRepresentation]];
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -233,7 +233,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 }
 
 
-- (void) _handleRestlessApplicationDidUpdateNotification:(NSNotification *)note
+- (void) _handleEntryDidUpdateNotification:(NSNotification *)note
 {
     [self _updateEngineManually:NO];
     [self _saveState];
@@ -368,15 +368,15 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     if (!shouldPrevent) {
         bundleIDToApplicationMap = [NSMutableDictionary dictionary];
 
-        for (RestlessApplication *application in [_applicationsController arrangedObjects]) {
-            NSString       *bundleIdentifier = [application bundleIdentifier];
-            RestlessAction  action           = [application action];
+        for (Entry *entry in [_entryArrayController arrangedObjects]) {
+            NSString  *bundleIdentifier = [entry bundleIdentifier];
+            EntryType  type             = [entry type];
             
             if (!bundleIdentifier) continue;
             
-            [bundleIDToApplicationMap setObject:application forKey:bundleIdentifier];
+            [bundleIDToApplicationMap setObject:entry forKey:bundleIdentifier];
 
-            if (action == RestlessActionPreventLidCloseSleepWhenRunning) {
+            if (type == EntryTypePreventLidCloseSleepWhenRunning) {
                 if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:bundleIdentifier] count]) {
                     shouldPrevent = YES;
                     break;
@@ -393,9 +393,9 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
             NSString *bundleIdentifier = [[NSRunningApplication runningApplicationWithProcessIdentifier:pid] bundleIdentifier];
             
-            RestlessApplication *app = [bundleIDToApplicationMap objectForKey:bundleIdentifier];
+            Entry *entry = [bundleIDToApplicationMap objectForKey:bundleIdentifier];
             
-            if ([app action] == RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented) {
+            if ([entry type] == EntryTypePreventLidCloseSleepWhenIdleSleepPrevented) {
                 shouldPrevent = YES;
                 break;
             }
@@ -440,7 +440,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 {
     if (!_preferencesController) {
         _preferencesController = [[PreferencesController alloc] init];
-        [_preferencesController setApplicationsController:_applicationsController];
+        [_preferencesController setEntryArrayController:_entryArrayController];
     }
 
     [_preferencesController showWindow:self];

@@ -24,7 +24,7 @@
 
 #import "RestlessEngine.h"
 
-#import "RestlessApplication.h"
+#import "Entry.h"
 #import "AppleSPI.h"
 #import "HelperProtocol.h"
 

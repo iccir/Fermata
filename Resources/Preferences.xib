@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,11 +14,11 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="Preferences" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="796" width="440" height="338"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="440" height="338"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -85,7 +85,7 @@
                                                                 </menu>
                                                             </popUpButtonCell>
                                                             <connections>
-                                                                <binding destination="QRw-a0-1UW" name="selectedTag" keyPath="objectValue.action" id="ZEO-kb-dwO"/>
+                                                                <binding destination="QRw-a0-1UW" name="selectedTag" keyPath="objectValue.type" id="Rzy-Mr-JOl"/>
                                                             </connections>
                                                         </popUpButton>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wLX-CU-WsM">
@@ -110,17 +110,17 @@
                                         </tableColumn>
                                     </tableColumns>
                                     <connections>
-                                        <binding destination="-2" name="content" keyPath="applicationsController.arrangedObjects" id="m2l-Yu-1nm"/>
-                                        <binding destination="-2" name="selectionIndexes" keyPath="applicationsController.selectionIndexes" previousBinding="m2l-Yu-1nm" id="GZU-vc-68s"/>
+                                        <binding destination="-2" name="content" keyPath="entryArrayController.arrangedObjects" id="RCX-AN-zUb"/>
+                                        <binding destination="-2" name="selectionIndexes" keyPath="entryArrayController.selectionIndexes" previousBinding="RCX-AN-zUb" id="LFV-PZ-b3V"/>
                                     </connections>
                                 </tableView>
                             </subviews>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="kXl-ox-WgH">
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kXl-ox-WgH">
                             <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="nOP-u9-wT4">
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="nOP-u9-wT4">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -133,7 +133,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="addApplication:" target="-2" id="N5o-5a-EVV"/>
+                            <action selector="addEntry:" target="-2" id="eya-H5-GMd"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TvP-9y-NaV">
@@ -144,8 +144,8 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="removeApplication:" target="-2" id="c2X-6O-vhs"/>
-                            <binding destination="-2" name="enabled" keyPath="self.applicationsController.selectedObjects.@count" id="HJY-0s-TA3">
+                            <action selector="removeEntry:" target="-2" id="bqb-xG-1Kz"/>
+                            <binding destination="-2" name="enabled" keyPath="self.entryArrayController.selectedObjects.@count" id="1tU-PU-FA1">
                                 <dictionary key="options">
                                     <integer key="NSMultipleValuesPlaceholder" value="1"/>
                                     <integer key="NSNoSelectionPlaceholder" value="0"/>
@@ -235,12 +235,12 @@
                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cjI-Z3-go8">
                         <rect key="frame" x="224" y="62" width="122" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <popUpButtonCell key="cell" type="push" title="Forever" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="qg0-uA-BMx" id="IcT-8b-YQc">
+                        <popUpButtonCell key="cell" type="push" title="Forever" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="qg0-uA-BMx" id="IcT-8b-YQc">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
                             <menu key="menu" id="HoR-7r-P2N">
                                 <items>
-                                    <menuItem title="Forever" id="qg0-uA-BMx"/>
+                                    <menuItem title="Forever" state="on" id="qg0-uA-BMx"/>
                                     <menuItem title="1 minute" tag="1" id="Mib-gr-7fa"/>
                                     <menuItem title="5 minutes" tag="5" id="8io-dV-tXO">
                                         <modifierMask key="keyEquivalentModifierMask"/>

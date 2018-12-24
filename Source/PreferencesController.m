@@ -23,7 +23,7 @@
 
 
 #import "PreferencesController.h"
-#import "RestlessApplication.h"
+#import "Entry.h"
 
 
 @import ServiceManagement;
@@ -41,7 +41,7 @@
 }
 
 
-- (IBAction) addApplication:(id)sender
+- (IBAction) addEntry:(id)sender
 {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
     
@@ -65,22 +65,23 @@
             if (!name) name = bundleIdentifier;
             
             if (bundleIdentifier && name) {
-                RestlessApplication *app = [[RestlessApplication alloc] init];
-                [app setName:name];
-                [app setBundleIdentifier:bundleIdentifier];
-                [app setAction:RestlessActionPreventLidCloseSleepWhenIdleSleepPrevented];
+                Entry *entry = [[Entry alloc] init];
+
+                [entry setName:name];
+                [entry setBundleIdentifier:bundleIdentifier];
+                [entry setType:EntryTypePreventLidCloseSleepWhenIdleSleepPrevented];
                 
-                [_applicationsController addObject:app];
+                [_entryArrayController addObject:entry];
             }
         }
     }];
 }
 
 
-- (IBAction) removeApplication:(id)sender
+- (IBAction) removeEntry:(id)sender
 {
-    [_applicationsController removeObjects:[_applicationsController selectedObjects]];
-    [_applicationsController setSelectedObjects:@[ ]];
+    [_entryArrayController removeObjects:[_entryArrayController selectedObjects]];
+    [_entryArrayController setSelectedObjects:@[ ]];
 }
 
 
