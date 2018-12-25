@@ -337,7 +337,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 - (void) _updateEngineManually:(BOOL)isManual
 {
     BOOL shouldPrevent = NO;
-    NSMutableDictionary *bundleIDToApplicationMap = nil;
+    NSMutableDictionary *bundleIDToEntryMap = nil;
 
     if (_applicationIsTerminating) return;
 
@@ -363,10 +363,10 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     }
 
     // Step 2a - Check RestlessActionPreventLidCloseSleepWhenRunning
-    // Step 2b - Also build bundleIDToApplicationMap
+    // Step 2b - Also build bundleIDToEntryMap
     //
     if (!shouldPrevent) {
-        bundleIDToApplicationMap = [NSMutableDictionary dictionary];
+        bundleIDToEntryMap = [NSMutableDictionary dictionary];
 
         for (Entry *entry in [_entryArrayController arrangedObjects]) {
             NSString  *bundleIdentifier = [entry bundleIdentifier];
@@ -374,7 +374,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
             
             if (!bundleIdentifier) continue;
             
-            [bundleIDToApplicationMap setObject:entry forKey:bundleIdentifier];
+            [bundleIDToEntryMap setObject:entry forKey:bundleIdentifier];
 
             if (type == EntryTypePreventLidCloseSleepWhenRunning) {
                 if ([[NSRunningApplication runningApplicationsWithBundleIdentifier:bundleIdentifier] count]) {
@@ -393,7 +393,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
             NSString *bundleIdentifier = [[NSRunningApplication runningApplicationWithProcessIdentifier:pid] bundleIdentifier];
             
-            Entry *entry = [bundleIDToApplicationMap objectForKey:bundleIdentifier];
+            Entry *entry = [bundleIDToEntryMap objectForKey:bundleIdentifier];
             
             if ([entry type] == EntryTypePreventLidCloseSleepWhenIdleSleepPrevented) {
                 shouldPrevent = YES;

@@ -40,9 +40,6 @@
 
 @implementation RestlessEngine {
     NSTimer *_timer;
-    NSDictionary *_bundleIDToApplicationMap;
-    
-    NSTimeInterval _checkDate;
     NSInteger _helperVersion;
 }
 
