@@ -16,12 +16,13 @@ Many DJs and musicians use headphones during live performances. It's common to p
 
 Unfortunately, macOS has no built-in option to disable the Lid Close sensor. Apps such as [InsomniaX](https://github.com/semaja2/InsomniaX) and [NoSleep](https://github.com/integralpro/nosleep) attempt to prevent it via a kernel extension. I had issues getting these apps to work due to Apple's [System Integrity Protection](https://en.wikipedia.org/wiki/System_Integrity_Protection) and [User-Approved Kernel Extension Loading](https://developer.apple.com/library/content/technotes/tn2459/_index.html). 
 
-## Usage
+## Installation and Usage
 
-1. Download and launch Fermata.
-2. Click on the fermata icon in the top-right corner of your menu bar.
-3. Click "Preferences…".
-4. Add your favorite music app. By default, Fermata is configured to work with [Embrace](https://www.ricciadams.com/projects/embrace) (my DJ app).
+1. [Download the latest release](https://github.com/iccir/Fermata/releases) of Fermata.
+2. Copy the downloaded application to your `/Applications` folder and launch it.
+3. Click on the fermata icon in the top-right corner of your menu bar.
+4. Click "Preferences…".
+5. Add your favorite music app. By default, Fermata is configured to work with [Embrace](https://www.ricciadams.com/projects/embrace) (my DJ app).
 
 When Embrace starts to play audio, it prevents Idle Sleep via a call to `-[NSProcessInfo beginActivityWithOptions:reason:]`. Fermata sees this prevention and "upgrades" it to also prevent Lid Close Sleep. When Embrace stops playing audio, it once again allows Idle Sleep. Fermata sees this and re-enables Lid Close Sleep.
 
