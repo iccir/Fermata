@@ -41,6 +41,29 @@
 @implementation RestlessEngine {
     NSTimer *_timer;
     NSInteger _helperVersion;
+    
+    IOPMAssertionID _diskSleepAssertion;
+    IOPMAssertionID _displaySleepAssertion;
+    IOPMAssertionID _idleSleepAssertion;
+}
+
+
+- (void) dealloc
+{
+    if (_diskSleepAssertion) {
+        IOPMAssertionRelease(_diskSleepAssertion);
+        _diskSleepAssertion = kIOPMNullAssertionID;
+    }
+
+    if (_displaySleepAssertion) {
+        IOPMAssertionRelease(_displaySleepAssertion);
+        _displaySleepAssertion = kIOPMNullAssertionID;
+    }
+
+    if (_idleSleepAssertion) {
+        IOPMAssertionRelease(_idleSleepAssertion);
+        _idleSleepAssertion = kIOPMNullAssertionID;
+    }
 }
 
 
@@ -151,6 +174,29 @@
 }
 
 
+- (void) _updateAssertion:(IOPMAssertionID *)assertionPtr type:(CFStringRef)type enabled:(BOOL)enabled 
+{
+    if (enabled && (*assertionPtr == 0)) {
+        IOPMAssertionCreateWithName(type, kIOPMAssertionLevelOn, CFSTR("Fermata is active"), assertionPtr);
+        
+    } else if (!enabled && *assertionPtr) {
+        IOPMAssertionRelease(*assertionPtr);
+        *assertionPtr = kIOPMNullAssertionID;
+    }
+}
+
+
+- (void) _updateAdditionalAssertions
+{
+    BOOL shouldPreventDiskSleep    = _preventingLidCloseSleep && _alsoPreventDiskSleep;
+    BOOL shouldPreventDisplaySleep = _preventingLidCloseSleep && _alsoPreventDisplaySleep;
+
+    [self _updateAssertion:&_diskSleepAssertion    type:kIOPMAssertPreventDiskIdle             enabled:shouldPreventDiskSleep];
+    [self _updateAssertion:&_displaySleepAssertion type:kIOPMAssertPreventUserIdleDisplaySleep enabled:shouldPreventDisplaySleep];
+    [self _updateAssertion:&_idleSleepAssertion    type:kIOPMAssertPreventUserIdleSystemSleep  enabled:_preventingLidCloseSleep];
+}
+
+
 #pragma mark - Public Methods
 
 - (void) checkHelper
@@ -221,15 +267,38 @@
 }
 
 
-- (BOOL) isPreventingLidCloseSleep
-{
-    return _preventingLidCloseSleep;
-}
-
-
 - (void) allowLidCloseSleepAfter:(NSTimeInterval)delay
 {
     [self performSelector:@selector(_allowLidCloseSleep) withObject:nil afterDelay:delay];
+}
+
+
+#pragma mark - Accessors
+
+- (void) setPreventingLidCloseSleep:(BOOL)preventingLidCloseSleep
+{
+    if (_preventingLidCloseSleep != preventingLidCloseSleep) {
+        _preventingLidCloseSleep = preventingLidCloseSleep;
+        [self _updateAdditionalAssertions];
+    }
+}
+
+
+- (void) setAlsoPreventDiskSleep:(BOOL)alsoPreventDiskSleep
+{
+    if (_alsoPreventDiskSleep != alsoPreventDiskSleep) {
+        _alsoPreventDiskSleep = alsoPreventDiskSleep;
+        [self _updateAdditionalAssertions];
+    }
+}
+
+
+- (void) setAlsoPreventDisplaySleep:(BOOL)alsoPreventDisplaySleep
+{
+    if (_alsoPreventDisplaySleep != alsoPreventDisplaySleep) {
+        _alsoPreventDisplaySleep = alsoPreventDisplaySleep;
+        [self _updateAdditionalAssertions];
+    }
 }
 
 

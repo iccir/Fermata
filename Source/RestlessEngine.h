@@ -39,4 +39,7 @@
 
 @property (nonatomic, readonly, getter=isPreventingLidCloseSleep) BOOL preventingLidCloseSleep;
 
+@property (nonatomic) BOOL alsoPreventDiskSleep;
+@property (nonatomic) BOOL alsoPreventDisplaySleep;
+
 @end

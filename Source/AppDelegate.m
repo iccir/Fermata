@@ -36,6 +36,8 @@ static NSString * const ManualPreventionKey               = @"ManualPrevention";
 static NSString * const ManualDurationKey                 = @"ManualDuration";
 static NSString * const UpdateFrequencyKey                = @"UpdateFrequency";
 static NSString * const ReenableDelayKey                  = @"ReenableDelay";
+static NSString * const AlsoPreventDiskSleepKey           = @"AlsoPreventDiskSleep";
+static NSString * const AlsoPreventDisplaySleepKey        = @"AlsoPreventDisplaySleep";
 
 
 @interface AppDelegate ()
@@ -78,7 +80,10 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
         
         UpdateFrequencyKey: @10,
         ReenableDelayKey:   @10,
-        ManualDurationKey:  @10
+        ManualDurationKey:  @10,
+        
+        AlsoPreventDiskSleepKey:    @NO,
+        AlsoPreventDisplaySleepKey: @NO
     };
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -341,7 +346,9 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
 
     if (_applicationIsTerminating) return;
 
-    NSTimeInterval reenableDelay = [[NSUserDefaults standardUserDefaults] doubleForKey:ReenableDelayKey];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    NSTimeInterval reenableDelay = [defaults doubleForKey:ReenableDelayKey];
     if (isManual) reenableDelay = 0;
 
     // Step 1 - Check manual trigger
@@ -349,7 +356,7 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
     if (_manualPreventionActive) {
         shouldPrevent = YES;
         
-        NSInteger durationInMinutes = [[NSUserDefaults standardUserDefaults] integerForKey:ManualDurationKey];
+        NSInteger durationInMinutes = [defaults integerForKey:ManualDurationKey];
 
         if (durationInMinutes) {
             NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
@@ -402,8 +409,12 @@ static NSString * const ReenableDelayKey                  = @"ReenableDelay";
         }
     }
 
+    [_engine setAlsoPreventDiskSleep:[defaults boolForKey:AlsoPreventDiskSleepKey]];
+    [_engine setAlsoPreventDisplaySleep:[defaults boolForKey:AlsoPreventDisplaySleepKey]];
+
     if (shouldPrevent) {
         [_engine preventLidCloseSleep];
+        
     } else {
         [_engine allowLidCloseSleepAfter:reenableDelay];
     }
