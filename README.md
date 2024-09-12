@@ -42,6 +42,18 @@ By examining Apple's [IOKitUser](https://opensource.apple.com/source/IOKitUser/)
 
 I've filed [rdar://35954315](http://openradar.appspot.com/radar?id=4931350570205184) for a public API solution to this problem.
 
+## License
+
+I only care about proper attribution in source code. While
+attribution in binary form is welcomed, it is not necessary.
+
+Hence, unless otherwise noted, all files in this project are licensed under
+both the [MIT License](https://github.com/iccir/Fermata/blob/main/LICENSE)
+OR the [1-clause BSD License](https://opensource.org/license/bsd-1-clause).
+You may choose either license.
+
+`SPDX-License-Identifier: MIT OR BSD-1-Clause`
+
 ## Disclaimer
 
 This software disables your Lid Close Sensor. While Apple laptops are designed to operate in ["closed-display mode"](https://support.apple.com/en-us/HT201834), Fermata makes it easier to accidentally toss a running laptop into your bag. This can result in overheating or damage to mechanical hard drives.
